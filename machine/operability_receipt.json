@@ -1,0 +1,26 @@
+{
+  "schema": "glaciereq.operability-receipt.v1",
+  "repository": "GlacierEQ/lambda-useful-gpu-minute-contract",
+  "at": "2026-08-10T10:11Z",
+  "source_sha": "77e704e1d5b77f15ad0a17c481f488e0f7097572464f0b3b86a9e5c1cb4e0877",
+  "entry": "scripts/operate.py",
+  "primary_output": {
+    "module": "useful_gpu_minute_contract",
+    "ok": true,
+    "repository": "GlacierEQ/lambda-useful-gpu-minute-contract",
+    "smoke": {
+      "args": [
+        "UsefulGpuMinuteContractRequest(subject_i"
+      ],
+      "content_checked": true,
+      "invoked": true,
+      "kind": "class",
+      "method": "evaluate",
+      "module_local": true,
+      "name": "Mechanism",
+      "result": "UsefulGpuMinuteContractReceipt(decision=<Decision.ALLOW: 'ALLOW'>, reasons=('scaffold_allow',), digest='de5a200a89430d2dec7318cf5aea51ee466c45d752e842d6d852e6bed15c045c', metrics={'scaffold': True, 'payload_keys': [], 'budget': 1.0})"
+    }
+  },
+  "dual_run_ok": true,
+  "result": "PASS"
+}

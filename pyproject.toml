@@ -1,0 +1,10 @@
+[project]
+name = "lambda-useful-gpu-minute-contract"
+version = "0.0.1"
+description = "Scaffold: Useful-GPU-Minute Contract (independent Lambda lens)"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

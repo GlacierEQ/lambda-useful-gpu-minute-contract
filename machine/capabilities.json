@@ -1,0 +1,12 @@
+{
+  "schema": "glaciereq.repo-capabilities.v1",
+  "repository": "GlacierEQ/lambda-useful-gpu-minute-contract",
+  "capabilities": [
+    {
+      "id": "useful-gpu-minute-contract",
+      "name": "Useful-GPU-Minute Contract",
+      "status": "SCAFFOLD",
+      "module": "src/useful_gpu_minute_contract.py"
+    }
+  ]
+}

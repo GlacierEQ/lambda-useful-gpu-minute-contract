@@ -1,0 +1,11 @@
+{
+  "schema": "glaciereq.promotion-authority-grant.v1",
+  "repository": "GlacierEQ/lambda-useful-gpu-minute-contract",
+  "source_sha": "77e704e1d5b77f15ad0a17c481f488e0f7097572464f0b3b86a9e5c1cb4e0877",
+  "proof_receipt_digest": "b19f08b02eec4d5592d8175758280ff2dc4b75f60cc65e8fe8798775bd5b4596",
+  "not_after": 1788948669.165083,
+  "mac": "51e16b2f6aa86d45b7e4af74ce9ffbb7b615d2f0ca2bf0c60a0ab12aef223856",
+  "issuer": "local_operator_promotion_authority",
+  "verified": true,
+  "secret_ref": "src/promotion_authority.py::LOCAL_OPERATOR_SECRET"
+}
