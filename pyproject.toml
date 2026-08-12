@@ -1,9 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "lambda-useful-gpu-minute-contract"
-version = "0.0.1"
-description = "Scaffold: Useful-GPU-Minute Contract (independent Lambda lens)"
+version = "1.0.0"
+description = "Useful-compute accounting and run selection for GPU allocations"
 requires-python = ">=3.11"
 dependencies = []
+
+[project.scripts]
+useful-gpu-minute-contract = "useful_gpu_minute_cli:main"
+
+[tool.setuptools]
+py-modules = ["useful_gpu_minute_contract", "useful_gpu_minute_cli", "promotion_authority"]
+package-dir = {"" = "src"}
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
