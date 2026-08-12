@@ -1,50 +1,63 @@
 # Useful-GPU-Minute Contract
 
-Independent GlacierEQ portfolio exhibit aligned to **Lambda** operating themes.
+Independent GlacierEQ portfolio implementation aligned to **Lambda** operating themes.
 
-> **Not affiliated.** This repository is not affiliated with, endorsed by, employed by, or deployed at Lambda.
-> No proprietary access, production deployment, customer impact, or company partnership is claimed.
+> **Not affiliated.** This repository is not affiliated with, endorsed by, employed by, or deployed at Lambda. No proprietary access, production deployment, customer impact, or company partnership is claimed.
 
-## Bottleneck (GlacierEQ hypothesis)
+## Purpose
 
-differentiating GPU access when raw capacity increasingly commoditizes and customers care about reliable cluster performance and time-to-useful-compute
+Measure accelerator service by **useful model work**, not by how long a GPU happened to be allocated.
 
-**Brick wall:** Silent success without receipts; affiliation or production claims without evidence.
+The contract makes provisioning delay, storage load, network stalls, failures, retries, and unclassified idle time explicit so raw capacity cannot masquerade as reliable compute delivery.
 
-**Observed public pressure (snapshot hypothesis):** Public market pressure toward AI-enabled products and operators (hypothesis only).
+## Implemented mechanism
 
-## Innovation mechanism
+`UsefulGpuMinuteContract` meters candidate runs into:
 
-**Useful-GPU-Minute Contract** — Meter and optimize time from allocation to productive model work, including provisioning, failures, network stalls, storage load, and job retries—not just rented accelerator time.
+- allocated GPU minutes;
+- productive/useful GPU minutes;
+- provisioning minutes;
+- storage-load minutes;
+- network-stall minutes;
+- failure minutes;
+- retry minutes;
+- unclassified idle minutes.
 
-## Target roles
+Each run is checked against a declared service contract for minimum useful ratio, maximum time-to-useful-compute, and maximum failure fraction. Accounting that exceeds the allocation is rejected. Eligible runs are ranked deterministically by useful ratio, time to useful compute, failure fraction, and stable run id.
 
-- Applied AI Systems Engineer
-- Forward-Deployed Engineer
+The receipt exposes the full accounting, contract violations, selected run, and a SHA-256 decision digest.
 
-## Application move
+## Run
 
-Lead with a small, inspectable Cluster Fairshare Gate exhibit and explicit non-affiliation boundary.
+```bash
+python -m pytest -q
+python scripts/operate.py
+```
 
-## Current scaffold state
+Build and install:
 
-This leaf is a **scaffold**: contracts, tests, and a stub mechanism exist so another engineer/AI can fill production-grade code without inventing company affiliation.
+```bash
+python -m pip install build
+python -m build
+python -m pip install dist/*.whl
+useful-gpu-minute-contract
+```
 
-| Surface | Path |
-|---------|------|
-| Mechanism stub | `src/useful_gpu_minute_contract.py` |
-| Operate entry | `scripts/operate.py` |
-| Contract tests | `tests/` |
-| Target contract | `machine/target-contract.json` |
-| **AI fill-in brief** | **`DEV_UP_INSTRUCTIONS.md`** |
-| Issue contract | `ISSUE_CONTRACT.md` |
+Evaluate your own run measurements:
 
-## Non-claims
+```bash
+useful-gpu-minute-contract --input gpu-runs.json
+```
 
-- No Lambda employment, endorsement, proprietary data, or production use
-- No customer, revenue, latency, or scale claims without separate receipts
-- Scaffold tests define **intended behavior**, not verified production excellence
+## Proof surface
 
-## Next gate
+- `src/useful_gpu_minute_contract.py` — accounting and contract selection engine
+- `src/useful_gpu_minute_cli.py` — installable execution surface
+- `tests/test_useful_gpu_minute_contract.py` — useful ratio, time-to-use, failures, accounting integrity, duplicate and idle-time behavior
+- `tests/test_adversarial.py` — fail-closed adversarial coverage
+- `.github/workflows/tests.yml` — tests + cold-start + wheel build/install + installed CLI
+- `machine/` — existing Helix target, proof, authority, and promotion surfaces remain preserved
 
-CURRENT_SOURCE_VALIDATION
+## Current boundary
+
+The mechanism operates on supplied run measurements and does not claim Lambda infrastructure access or production service levels. The next depth step is a telemetry adapter for a permitted GPU scheduler/test cluster that derives these phase measurements automatically.
