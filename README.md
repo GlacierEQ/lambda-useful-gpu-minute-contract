@@ -27,6 +27,21 @@ Each run is checked against a declared service contract for minimum useful ratio
 
 The receipt exposes the full accounting, contract violations, selected run, and a SHA-256 decision digest.
 
+## Scheduler telemetry adapter
+
+`scheduler_telemetry_adapter.build_contract_payload()` derives those phase totals from raw per-run scheduler intervals rather than accepting pre-aggregated accounting.
+
+Each interval carries a run id, phase, monotonic start time, and end time. The adapter:
+
+- recognizes productive, provisioning, storage-load, network-stall, failure, retry, and idle phases;
+- refuses invalid or non-finite timestamps and non-positive intervals;
+- sorts each run timeline and refuses overlaps so the same GPU time cannot be counted twice;
+- derives allocated and per-phase minutes from interval duration;
+- leaves explicit idle as unclassified time for the core contract to independently reconcile;
+- emits the normalized run payload consumed by `UsefulGpuMinuteContract`.
+
+This moves the evidence boundary from hand-authored phase totals to scheduler-style timeline observations.
+
 ## Run
 
 ```bash
@@ -52,12 +67,14 @@ useful-gpu-minute-contract --input gpu-runs.json
 ## Proof surface
 
 - `src/useful_gpu_minute_contract.py` — accounting and contract selection engine
+- `src/scheduler_telemetry_adapter.py` — scheduler timeline ingestion and phase derivation
 - `src/useful_gpu_minute_cli.py` — installable execution surface
 - `tests/test_useful_gpu_minute_contract.py` — useful ratio, time-to-use, failures, accounting integrity, duplicate and idle-time behavior
+- `tests/test_scheduler_telemetry_adapter.py` — interval derivation, overlap refusal, and phase validation
 - `tests/test_adversarial.py` — fail-closed adversarial coverage
 - `.github/workflows/tests.yml` — tests + cold-start + wheel build/install + installed CLI
 - `machine/` — existing Helix target, proof, authority, and promotion surfaces remain preserved
 
 ## Current boundary
 
-The mechanism operates on supplied run measurements and does not claim Lambda infrastructure access or production service levels. The next depth step is a telemetry adapter for a permitted GPU scheduler/test cluster that derives these phase measurements automatically.
+The mechanism can now derive its accounting from supplied scheduler interval telemetry. It does not yet scrape or subscribe to a real GPU scheduler/control plane, and it claims no Lambda infrastructure access or production service levels. The next depth step is a permitted scheduler adapter that collects these interval events directly from a test cluster or telemetry export instead of receiving them as input.
